@@ -1,0 +1,18 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 8192
+    vb.cpus = 2
+    vb.gui = true
+  end
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  config.vm.synced_folder "C:\\Users\\Mevel\\Downloads\\wordpress-chef-project", "/home/vagrant/wordpress-chef-project"
+
+  config.vm.provision "chef_solo" do |chef|
+    chef.cookbooks_path = "cookbooks"
+    chef.add_recipe "my_wordpress::default"
+  end
+end
